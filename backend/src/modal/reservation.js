@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 
 const reservationSchema = new mongoose.Schema({
   slotNo: {
-    type: Number,
-    required: [true, "Slot number is missing"],
-    enum: [1, 2, 3],
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "slot",
+    required: true,
   },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
   bookedFromDate: {
