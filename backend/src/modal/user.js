@@ -11,6 +11,14 @@ const userSchema = mongoose.Schema({
     validate: [validator.isEmail, "Please enter valid email address"],
   },
   password: { type: String, required: [true, "password is missing"] },
+  role: {
+    type: String,
+    enum: ["user", "owner"],
+    required: true,
+    default: "user",
+  },
+  booked: [],
+  cancelled: [],
 });
 
 userSchema.pre("save", async function (next) {
