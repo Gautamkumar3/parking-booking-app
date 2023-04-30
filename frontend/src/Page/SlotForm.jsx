@@ -15,15 +15,14 @@ import axios from "axios";
 const SlotForm = () => {
   const [data, setData] = useState({
     slotNo: "",
-    startDate: "",
-    endDate: "",
+    bookedFromDate: "",
+    bookedTill: "",
     price: "",
   });
   const toast = useToast();
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
-
     setData({
       ...data,
       [name]: type == "datetime-local" ? value : +value,
@@ -93,15 +92,15 @@ const SlotForm = () => {
           <FormLabel mt={2}>Start date</FormLabel>
           <Input
             type={"datetime-local"}
-            placeholder="start date"
-            name="startDate"
+            placeholder="Book from date"
+            name="bookedFromDate"
             onChange={handleChange}
           />
           <FormLabel mt={2}>End date</FormLabel>
           <Input
             type={"datetime-local"}
-            name="endDate"
-            placeholder="end date"
+            name="bookedTill"
+            placeholder="book till"
             onChange={handleChange}
           />
           <Button mt={3} type="submit" colorScheme={"whatsapp"} w="full">

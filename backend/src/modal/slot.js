@@ -11,11 +11,11 @@ const slotSchema = new mongoose.Schema({
     enum: ["available", "booked"],
     default: "available",
   },
-  startDate: {
+  bookedFromDate: {
     type: Date,
     required: true,
   },
-  endDate: {
+  bookedTill: {
     type: Date,
     required: true,
   },
@@ -23,8 +23,8 @@ const slotSchema = new mongoose.Schema({
 });
 
 slotSchema.pre("validate", function (next) {
-  if (this.startDate > this.endDate) {
-    const err = new Error("start date must be less than end date");
+  if (this.bookedFromDate >= this.bookedTill) {
+    const err = new Error("book from date must be less than book till date");
     next(err);
   }
   next();

@@ -2,27 +2,26 @@ const mongoose = require("mongoose");
 
 const reservationSchema = new mongoose.Schema({
   slotNo: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "slot",
-    required: true,
+    type: Number,
+    required: [true, "Slot number is required"],
+    enum: [1, 2, 3],
   },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
   bookedFromDate: {
-    type: String,
+    type: Date,
     required: [true, "bookedFromDate is missing"],
   },
-  bookedTill: { type: String, required: [true, "bookedTill is missing"] },
+  bookedTill: { type: Date, required: [true, "bookedTill is missing"] },
   status: {
     type: String,
-    enum: ["Avilable", "Booked", "Cancelled"],
-    default: "Avilable",
+    enum: ["Booked", "Cancelled"],
   },
   price: { type: Number, required: [true, "Price is missing"] },
 });
 
 reservationSchema.pre("validate", function (next) {
-  if (this.bookedFromDate > this.bookedTill) {
-    const err = new Error("bookedFromDate must be less than bookedTillDate");
+  if (this.bookedFromDate >= this.bookedTill) {
+    const err = new Error("book from date must be less than book till date");
     next(err);
   }
   next();
