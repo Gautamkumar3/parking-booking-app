@@ -17,12 +17,17 @@ const SlotForm = () => {
     slotNo: "",
     startDate: "",
     endDate: "",
+    price: "",
   });
   const toast = useToast();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setData({ ...data, [name]: name === "slotNo" ? +value : value });
+    const { name, value, type } = e.target;
+
+    setData({
+      ...data,
+      [name]: type == "datetime-local" ? value : +value,
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -78,6 +83,13 @@ const SlotForm = () => {
             <option value={3}>Slot 3</option>
           </Select>
 
+          <FormLabel mt={2}>Price</FormLabel>
+          <Input
+            type={"number"}
+            placeholder="Price"
+            name="price"
+            onChange={handleChange}
+          />
           <FormLabel mt={2}>Start date</FormLabel>
           <Input
             type={"datetime-local"}

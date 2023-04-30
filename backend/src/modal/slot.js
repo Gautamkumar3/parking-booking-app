@@ -12,13 +12,14 @@ const slotSchema = new mongoose.Schema({
     default: "available",
   },
   startDate: {
-    type: String,
+    type: Date,
     required: true,
   },
   endDate: {
-    type: String,
+    type: Date,
     required: true,
   },
+  price: { type: Number, required: [true, "Price is missing"] },
 });
 
 slotSchema.pre("validate", function (next) {

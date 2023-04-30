@@ -17,6 +17,7 @@ const reservationSchema = new mongoose.Schema({
     enum: ["Avilable", "Booked", "Cancelled"],
     default: "Avilable",
   },
+  price: { type: Number, required: [true, "Price is missing"] },
 });
 
 reservationSchema.pre("validate", function (next) {
