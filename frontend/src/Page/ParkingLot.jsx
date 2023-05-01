@@ -13,7 +13,9 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 const getParkingLotData = async () => {
-  let res = await axios.get(`http://localhost:8080/slot/all`);
+  let res = await axios.get(
+    `https://parking-booking-app-api-production.up.railway.app/slot/all`
+  );
   return res.data;
 };
 
@@ -33,7 +35,7 @@ const ParkingLot = () => {
   function handleBookSlot(id) {
     axios
       .post(
-        `http://localhost:8080/slot/book/${id}`,
+        `https://parking-booking-app-api-production.up.railway.app/slot/book/${id}`,
         {},
         { headers: { token: token } }
       )
@@ -63,7 +65,7 @@ const ParkingLot = () => {
   const handleCancelSlot = (id) => {
     axios
       .post(
-        `http://localhost:8080/slot/cancel/${id}`,
+        `https://parking-booking-app-api-production.up.railway.app/slot/cancel/${id}`,
         {},
         { headers: { token: token } }
       )

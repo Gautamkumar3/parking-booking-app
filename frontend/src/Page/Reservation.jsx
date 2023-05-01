@@ -4,9 +4,12 @@ import React, { useEffect, useState } from "react";
 import ReservationCard from "../Components/ReservationCard";
 
 const getReservationData = async (token) => {
-  let res = await axios.get(`http://localhost:8080/reservation/all`, {
-    headers: { token },
-  });
+  let res = await axios.get(
+    `https://parking-booking-app-api-production.up.railway.app/reservation/all`,
+    {
+      headers: { token },
+    }
+  );
   return res.data;
 };
 

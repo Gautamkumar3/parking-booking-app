@@ -28,7 +28,10 @@ const Login = () => {
     e.preventDefault();
 
     await axios
-      .post("http://localhost:8080/user/login", data)
+      .post(
+        "https://parking-booking-app-api-production.up.railway.app/user/login",
+        data
+      )
       .then((res) => {
         toast({
           title: `Status code ${res.status}`,

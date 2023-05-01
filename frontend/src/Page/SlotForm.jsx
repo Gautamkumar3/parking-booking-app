@@ -33,7 +33,10 @@ const SlotForm = () => {
     e.preventDefault();
     console.log(data);
     await axios
-      .post("http://localhost:8080/slot/create", data)
+      .post(
+        "https://parking-booking-app-api-production.up.railway.app/slot/create",
+        data
+      )
       .then((res) => {
         toast({
           title: `Status code ${res.status}`,
