@@ -51,11 +51,27 @@ const getAllSlot = async (req, res) => {
 
 const bookSlot = async (req, res) => {
   const { id } = req.params;
+  let time = new Date();
+ 
+
   let slot = await SlotModal.findById(id);
+
   if (!slot) {
     return res.status(400).send({ status: "error", message: "Slot not found" });
   }
+  if (time > slot.bookedTill) {
+    slot.bookedTill = new Date(
+      time.getFullYear(),
+      time.getMonth(),
+      time.getDate() + 2
+    );
 
+    slot.save();
+    return res.status(400).send({
+      status: "error",
+      message: "Slot is expired we renew it in some time",
+    });
+  }
   if (slot.status === "available") {
     const newReservation = new ReservationModal({
       slotNo: slot.slotNo,
@@ -89,6 +105,7 @@ const bookSlot = async (req, res) => {
 
 const cancelSlot = async (req, res) => {
   const { id } = req.params;
+  let time = new Date();
   let slot = await SlotModal.findById(id);
   if (!slot) {
     return res.status(400).send({ status: "error", message: "Slot not found" });
@@ -99,6 +116,13 @@ const cancelSlot = async (req, res) => {
     return res
       .status(400)
       .send({ status: "error", message: "Reservation not found" });
+  }
+
+  if (time > slot.bookedTill || time > reservation.bookedTill) {
+    return res.status(400).send({
+      status: "error",
+      message: "Slot is expired",
+    });
   }
 
   if (slot.status === "booked" && reservation.status == "Booked") {

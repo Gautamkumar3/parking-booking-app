@@ -76,9 +76,20 @@ const userLogin = async (req, res) => {
 };
 
 const allBookedAndCancelledSlot = async (req, res) => {
-  let allBooked = UserModal.find().populate("booked.slotId");
-  console.log(allBooked);
-  res.send("allBooked");
+  try {
+    let allData = await UserModal.find({})
+      .populate("booked.slotId")
+      .populate("cancelled.slotId")
+      .select({ _id: 0, name: 1, booked: 1, cancelled: 1 });
+
+    return res.status(200).send({
+      status: "success",
+      message: "Get all users data successfully",
+      data: allData,
+    });
+  } catch (er) {
+    return res.status(500).send({ status: "error", message: er.message });
+  }
 };
 
 module.exports = { registerUser, userLogin, allBookedAndCancelledSlot };
