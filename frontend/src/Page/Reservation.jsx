@@ -1,4 +1,4 @@
-import { SimpleGrid } from "@chakra-ui/react";
+import { Box, Heading, SimpleGrid } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ReservationCard from "../Components/ReservationCard";
@@ -26,18 +26,21 @@ const Reservation = () => {
   }
 
   return (
-    <SimpleGrid
-      columns={[1, 2, 3, 4]}
-      spacing={5}
-      textAlign={"left"}
-      w="90%"
-      m="auto"
-      mt={5}
-    >
-      {data?.map((el) => (
-        <ReservationCard key={el._id} {...el} handleUpdate={handleUpdate} />
-      ))}
-    </SimpleGrid>
+    <Box>
+      <Heading my={5}>All Reservations</Heading>
+      <SimpleGrid
+        columns={[1, 2, 3, 4]}
+        spacing={5}
+        textAlign={"left"}
+        w="90%"
+        m="auto"
+        mt={5}
+      >
+        {data?.map((el) => (
+          <ReservationCard key={el._id} {...el} handleUpdate={handleUpdate} />
+        ))}
+      </SimpleGrid>
+    </Box>
   );
 };
 

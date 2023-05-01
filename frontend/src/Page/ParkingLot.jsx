@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Flex,
+  Heading,
   Image,
   SimpleGrid,
   Text,
@@ -97,6 +98,7 @@ const ParkingLot = () => {
 
   return (
     <Box>
+      <Heading my={5}>All Slots</Heading>
       <SimpleGrid
         columns={[1, 2, 3, 4]}
         spacing={5}

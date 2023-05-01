@@ -21,9 +21,8 @@ const createSlot = async (req, res) => {
 const getAllAvilableSlot = async (req, res) => {
   try {
     let time = new Date();
-
     let avilableSlot = await SlotModal.find({
-      $and: [{ endDate: { $gte: time } }, { status: "available" }],
+      $and: [{ bookedTill: { $gte: time } }, { status: "available" }],
     });
 
     return res.status(200).send({
