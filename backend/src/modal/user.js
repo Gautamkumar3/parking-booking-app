@@ -17,8 +17,10 @@ const userSchema = mongoose.Schema({
     required: true,
     default: "user",
   },
-  booked: [],
-  cancelled: [],
+  booked: [{ slotId: { type: mongoose.Schema.Types.ObjectId, ref: "slot" } }],
+  cancelled: [
+    { slotId: { type: mongoose.Schema.Types.ObjectId, ref: "slot" } },
+  ],
 });
 
 userSchema.pre("save", async function (next) {

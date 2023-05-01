@@ -60,6 +60,7 @@ const bookSlot = async (req, res) => {
   if (slot.status === "available") {
     const newReservation = new ReservationModal({
       slotNo: slot.slotNo,
+      slotId: id,
       user: req.userId,
       status: "Booked",
       bookedFromDate: slot.bookedFromDate,
@@ -87,9 +88,68 @@ const bookSlot = async (req, res) => {
   }
 };
 
+const cancelSlot = async (req, res) => {
+  const { id } = req.params;
+  let slot = await SlotModal.findById(id);
+  if (!slot) {
+    return res.status(400).send({ status: "error", message: "Slot not found" });
+  }
+  let reservation = await ReservationModal.findOne({ slotId: id });
+
+  if (!reservation) {
+    return res
+      .status(400)
+      .send({ status: "error", message: "Reservation not found" });
+  }
+
+  if (slot.status === "booked" && reservation.status == "Booked") {
+    slot.status = "available";
+    slot.save();
+    reservation.status = "Cancelled";
+    reservation.save();
+
+    await UserModal.updateOne(
+      { _id: req.userId },
+      {
+        $pull: { booked: { slotId: id } },
+        $push: { cancelled: { slotId: id } },
+      }
+    );
+    return res.status(200).send({
+      status: "success",
+      message: "Reservation cancelled successfully",
+    });
+  } else if (slot.status === "booked" && reservation.status === "Cancelled") {
+    slot.status = "available";
+    slot.save();
+    await UserModal.updateOne(
+      { _id: req.userId },
+      {
+        $pull: { booked: { slotId: id } },
+        $push: { cancelled: { slotId: id } },
+      }
+    );
+    return res.status(200).send({
+      status: "success",
+      message: "Reservation cancelled successfully",
+    });
+  } else if (slot.status === "available") {
+    return res.status(400).send({
+      status: "error",
+      message: "You couldn't cancel the slot because this is not booked",
+    });
+  } else {
+    return res.status(400).send({
+      status: "error",
+      message: "Something went wrong",
+    });
+  }
+};
+
 module.exports = {
   createSlot,
   getAllAvilableSlot,
   getAllSlot,
   bookSlot,
+  cancelSlot,
 };

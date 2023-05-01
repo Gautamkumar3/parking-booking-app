@@ -59,6 +59,36 @@ const ParkingLot = () => {
       });
   }
 
+  const handleCancelSlot = (id) => {
+    axios
+      .post(
+        `http://localhost:8080/slot/cancel/${id}`,
+        {},
+        { headers: { token: token } }
+      )
+      .then((res) => {
+        setUpdate(!update);
+        toast({
+          title: `Status code ${res.status}`,
+          description: `${res.data.message}`,
+          status: "success",
+          duration: 4000,
+          isClosable: true,
+          position: "top",
+        });
+      })
+      .catch((er) => {
+        toast({
+          title: `Status code ${er.response.status}`,
+          description: `${er.response.data.message || "Something went wrong"}`,
+          status: "error",
+          duration: 4000,
+          isClosable: true,
+          position: "top",
+        });
+      });
+  };
+
   useEffect(() => {
     getParkingLotData().then((res) => {
       setData(res.data);
@@ -95,7 +125,7 @@ const ParkingLot = () => {
                 </Badge>
               </Text>
               <Text>
-                <b>Start date : </b> {convertDate(el.bookedTill)}
+                <b>Start date : </b> {convertDate(el.bookedFromDate)}
               </Text>
               <Text>
                 <b>End date : </b> {convertDate(el.bookedTill)}
@@ -108,7 +138,11 @@ const ParkingLot = () => {
                 >
                   Book
                 </Button>
-                <Button w={"100px"} colorScheme="red">
+                <Button
+                  w={"100px"}
+                  colorScheme="red"
+                  onClick={() => handleCancelSlot(el._id)}
+                >
                   Cancel
                 </Button>
               </Flex>

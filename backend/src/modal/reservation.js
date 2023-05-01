@@ -6,6 +6,7 @@ const reservationSchema = new mongoose.Schema({
     required: [true, "Slot number is required"],
     enum: [1, 2, 3],
   },
+  slotId: { type: mongoose.Schema.Types.ObjectId, ref: "slot", required: true },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
   bookedFromDate: {
     type: Date,

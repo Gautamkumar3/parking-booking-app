@@ -1,4 +1,5 @@
 const UserModal = require("../modal/user");
+const SlotModal = require("../modal/slot");
 require("dotenv").config();
 const secretKey = process.env.SECRET_KEY;
 const jwt = require("jsonwebtoken");
@@ -74,4 +75,10 @@ const userLogin = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, userLogin };
+const allBookedAndCancelledSlot = async (req, res) => {
+  let allBooked = UserModal.find().populate("booked.slotId");
+  console.log(allBooked);
+  res.send("allBooked");
+};
+
+module.exports = { registerUser, userLogin, allBookedAndCancelledSlot };
